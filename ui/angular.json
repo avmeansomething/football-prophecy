@@ -6,19 +6,9 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "football-prophecy": {
+    "football-predictor": {
       "projectType": "application",
-      "schematics": {
-        "@schematics/angular:component": {
-          "standalone": false
-        },
-        "@schematics/angular:directive": {
-          "standalone": false
-        },
-        "@schematics/angular:pipe": {
-          "standalone": false
-        }
-      },
+      "schematics": {},
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -66,10 +56,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "football-prophecy:build:production"
+              "buildTarget": "football-predictor:build:production"
             },
             "development": {
-              "buildTarget": "football-prophecy:build:development"
+              "buildTarget": "football-predictor:build:development"
             }
           },
           "defaultConfiguration": "development"
