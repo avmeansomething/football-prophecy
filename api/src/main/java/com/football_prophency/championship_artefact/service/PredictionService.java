@@ -1,15 +1,19 @@
 package com.football_prophency.championship_artefact.service;
 
+import com.football_prophency.championship_artefact.enums.MatchStatus;
 import com.football_prophency.championship_artefact.model.Match;
 import com.football_prophency.championship_artefact.model.Prediction;
 import com.football_prophency.championship_artefact.repository.PredictionRepository;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import java.time.LocalDateTime;
+
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Builder
 public class PredictionService {
 
   private final PredictionRepository predictionRepository;
@@ -30,44 +34,42 @@ public class PredictionService {
 
   public Prediction createPrediction(Prediction prediction) {
     // Проверяем, что матч существует и ещё не закончен
-    Match match = matchService.getMatchById(prediction.getMatchId());
-    if ("finished".equals(match.getStatus())) {
+    Match match = prediction.getMatch();
+    if (MatchStatus.FINISHED.equals(match.getStatus())) {
       throw new IllegalStateException("Cannot predict on finished match");
     }
 
     // Проверяем, нет ли уже прогноза от этого пользователя на этот матч
-    List<Prediction> existing = predictionRepository
-      .findByMatchIdAndUserId(prediction.getMatchId(), prediction.getUserId());
-
-    if (!existing.isEmpty()) {
+    final var exists = predictionRepository.existsByMatchAndUser(prediction.getMatch(), prediction.getUser());
+    if (exists) {
       throw new IllegalStateException("Prediction already exists for this match");
     }
 
-    prediction.setCreatedAt(LocalDateTime.now());
-    prediction.setUpdatedAt(LocalDateTime.now());
-    prediction.setPoints(0); // временно, будет пересчитано после матча
+    prediction.setCreatedAt(ZonedDateTime.now());
+    prediction.setUpdatedAt(ZonedDateTime.now());
+    prediction.setPoints(0);
 
     return predictionRepository.save(prediction);
   }
 
   public Prediction updatePrediction(String id, Integer homeScore, Integer awayScore) {
     Prediction prediction = getPredictionById(id);
-    Match match = matchService.getMatchById(prediction.getMatchId());
+    Match match = prediction.getMatch();
 
-    if ("finished".equals(match.getStatus())) {
+    if (MatchStatus.FINISHED.equals(match.getStatus())) {
       throw new IllegalStateException("Cannot update prediction for finished match");
     }
 
     prediction.setHomeScore(homeScore);
     prediction.setAwayScore(awayScore);
-    prediction.setUpdatedAt(LocalDateTime.now());
+    prediction.setUpdatedAt(ZonedDateTime.now());
 
     return predictionRepository.save(prediction);
   }
 
   public void recalculatePointsForMatch(String matchId) {
     Match match = matchService.getMatchById(matchId);
-    if (!"finished".equals(match.getStatus())) {
+    if (!MatchStatus.FINISHED.equals(match.getStatus())) {
       throw new IllegalStateException("Match is not finished yet");
     }
 

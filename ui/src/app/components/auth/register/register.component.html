@@ -1,0 +1,82 @@
+<div class="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+  <div class="w-full max-w-md">
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-16 h-16 bg-white rounded-2xl shadow-md mb-4">
+        <i class="pi pi-user-plus text-red-500 text-3xl"></i>
+      </div>
+      <h1 class="text-2xl font-bold text-gray-900">Регистрация</h1>
+      <p class="text-gray-500 text-sm mt-1">Создай аккаунт и начни предсказывать</p>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+      <h2 class="text-xl font-semibold text-gray-900 mb-6">Новый аккаунт</h2>
+
+      <form (ngSubmit)="onSubmit()" class="space-y-5">
+        <div>
+          <label class="block text-gray-700 text-sm font-medium mb-2">
+            Имя пользователя
+          </label>
+          <input
+            type="text"
+            [(ngModel)]="username"
+            name="username"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+            placeholder="Придумайте логин"
+          />
+        </div>
+
+        <div>
+          <label class="block text-gray-700 text-sm font-medium mb-2">
+            Пароль
+          </label>
+          <input
+            type="password"
+            [(ngModel)]="password"
+            name="password"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+            placeholder="Придумайте пароль"
+          />
+        </div>
+
+        <div>
+          <label class="block text-gray-700 text-sm font-medium mb-2">
+            Подтвердите пароль
+          </label>
+          <input
+            type="password"
+            [(ngModel)]="confirmPassword"
+            name="confirmPassword"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+            placeholder="Повторите пароль"
+          />
+        </div>
+
+        @if (errorMessage()) {
+          <div class="bg-red-50 border border-red-200 text-red-600 px-4 py-2 rounded-lg text-sm">
+            {{ errorMessage() }}
+          </div>
+        }
+
+        <button
+          type="submit"
+          [disabled]="loading() || !username || !password || !confirmPassword"
+          class="w-full bg-red-500 text-white font-medium py-2 rounded-lg hover:bg-red-600 transition disabled:opacity-50"
+        >
+          @if (loading()) {
+            <span class="inline-block animate-spin mr-2">⚡</span>
+          }
+          Зарегистрироваться
+        </button>
+      </form>
+
+      <div class="text-center mt-6 pt-4 border-t border-gray-200">
+        <p class="text-sm text-gray-600">
+          Уже есть аккаунт?
+          <a routerLink="/login" class="text-red-500 font-medium hover:text-red-600 ml-1">
+            Войти
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

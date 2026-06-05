@@ -1,5 +1,6 @@
 package com.football_prophency.championship_artefact.service;
 
+import com.football_prophency.championship_artefact.enums.MatchStatus;
 import com.football_prophency.championship_artefact.model.Match;
 import com.football_prophency.championship_artefact.repository.MatchRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +15,6 @@ public class MatchService {
 
   private final MatchRepository matchRepository;
   private final PointsCalculatorService pointsCalculatorService;
-  private final PredictionService predictionService;
 
   public List<Match> getAllMatches() {
     return matchRepository.findAll();
@@ -27,7 +27,7 @@ public class MatchService {
   public Match createMatch(Match match) {
     match.setCreatedAt(ZonedDateTime.now());
     match.setUpdatedAt(ZonedDateTime.now());
-    match.setStatus("scheduled");
+    match.setStatus(MatchStatus.SCHEDULED);
     return matchRepository.save(match);
   }
 
@@ -39,6 +39,9 @@ public class MatchService {
     match.setStage(matchDetails.getStage());
     match.setGroupName(matchDetails.getGroupName());
     match.setUpdatedAt(ZonedDateTime.now());
+    if (ZonedDateTime.now().isAfter(match.getDateTime())) {
+      match.setStatus(MatchStatus.FINISHED);
+    }
     return matchRepository.save(match);
   }
 
@@ -46,14 +49,11 @@ public class MatchService {
     Match match = getMatchById(id);
     match.setHomeScore(homeScore);
     match.setAwayScore(awayScore);
-    match.setStatus("finished");
+    match.setStatus(MatchStatus.FINISHED);
     match.setUpdatedAt(ZonedDateTime.now());
 
     // Сохраняем результат
     Match savedMatch = matchRepository.save(match);
-
-    // Пересчитываем очки для всех прогнозов на этот матч
-    predictionService.recalculatePointsForMatch(id);
 
     return savedMatch;
   }

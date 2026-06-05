@@ -1,0 +1,68 @@
+<div class="login-bg">
+
+  <div class="login-card">
+
+    <div class="header">
+      <div class="logo">
+        <i class="pi pi-trophy"></i>
+      </div>
+
+      <h1>World Cup 2026</h1>
+      <p>Прогнозируй матчи и поднимайся в рейтинге</p>
+    </div>
+
+    <p-floatlabel>
+      <input pInputText [(ngModel)]="username" id="user" />
+      <label for="user">Логин</label>
+    </p-floatlabel>
+
+    <p-float-label>
+      <p-password
+        [(ngModel)]="password"
+        [toggleMask]="true"
+        [feedback]="false">
+      </p-password>
+      <label>Пароль</label>
+    </p-float-label>
+
+    <p-message
+      *ngIf="error()"
+      severity="error"
+      [text]="error()">
+    </p-message>
+
+    <p-button
+      label="Войти"
+      icon="pi pi-sign-in"
+      [loading]="loading()"
+      (onClick)="login()"
+      styleClass="w-full">
+    </p-button>
+
+    <p-divider align="center">
+      <span>demo</span>
+    </p-divider>
+
+    <div class="demo">
+      <p-button
+        label="Admin"
+        icon="pi pi-shield"
+        severity="info"
+        (onClick)="demoAdmin()">
+      </p-button>
+
+      <p-button
+        label="Player"
+        icon="pi pi-user"
+        severity="success"
+        (onClick)="demoPlayer()">
+      </p-button>
+    </div>
+
+    <a routerLink="/register" class="link">
+      Регистрация
+    </a>
+
+  </div>
+
+</div>

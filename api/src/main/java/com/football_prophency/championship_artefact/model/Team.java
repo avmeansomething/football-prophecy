@@ -6,20 +6,17 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import java.time.Instant;
 import java.time.ZonedDateTime;
 
 @Entity
-@Table(name = "teams", indexes = {
-  @Index(name = "idx_team_group", columnList = "team_group")
-})
+@Table(name = "teams")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Team {
   @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
-  private String id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
   @Column(nullable = false, unique = true)
   private String name;
@@ -27,8 +24,8 @@ public class Team {
   @Column(name = "team_group", nullable = false, length = 1)
   private String group;
 
+  @Column(name = "flag", nullable = false)
   private String flag;
-  private Integer fifaRanking;
 
   @CreationTimestamp
   @Column(name = "created_at", updatable = false)

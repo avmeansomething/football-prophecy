@@ -1,5 +1,6 @@
 package com.football_prophency.championship_artefact.model;
 
+import com.football_prophency.championship_artefact.enums.MatchStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,8 +21,8 @@ import java.time.ZonedDateTime;
 @AllArgsConstructor
 public class Match {
   @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
-  private String id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "home_team_id", nullable = false)
@@ -37,6 +38,7 @@ public class Match {
   @Column(nullable = false)
   private String stage;
 
+  @Column(nullable = false)
   private String groupName;
 
   @Column(name = "home_score")
@@ -46,10 +48,8 @@ public class Match {
   private Integer awayScore;
 
   @Column(nullable = false)
-  private String status = "scheduled";
-
-  @Column(name = "external_id")
-  private String externalId;
+  @Enumerated(EnumType.STRING)
+  private MatchStatus status = MatchStatus.SCHEDULED;
 
   @CreationTimestamp
   @Column(name = "created_at", updatable = false)

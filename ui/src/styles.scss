@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Tilda Sans';
+  src: url('/assets/tilda-sans-font.ttf');
+  font-weight: 100 900;
+  font-style: normal;
+}
+
+:root {
+  --font-family: 'Tilda Sans', sans-serif;
+}
+
+html,
+body {
+  font-family: var(--font-family), sans-serif;
+}

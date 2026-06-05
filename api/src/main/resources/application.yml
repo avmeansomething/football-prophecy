@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/football_predictor_2026
-    username: football_user
-    password: football_password
+    url: jdbc:postgresql://localhost:5432/general_db
+    username: postgres
+    password: admin
     driver-class-name: org.postgresql.Driver
 
   jpa:
